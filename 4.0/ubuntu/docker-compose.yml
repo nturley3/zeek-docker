@@ -1,0 +1,21 @@
+version: '3'
+services:
+    zeek:
+        image: zeek-docker-ubuntu:4
+        build: 
+            context: .
+            args:
+                build_version: 4.0.3
+        container_name: zeek-docker-ubuntu
+        command: bash
+        tty: true
+        stdin_open: true
+        cap_add:
+            - NET_RAW
+        network_mode: "host"
+        entrypoint: zeek
+        command: -C -i af_packet::eth0 local
+        volumes:
+            - /home/zeek/logs:/zeek
+        stdin_open: true
+        tty: true
