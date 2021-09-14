@@ -1,19 +1,18 @@
 version: '3'
 services:
     zeek:
-        image: zeek-docker-ubuntu:4
+        image: zeek-docker-alpine:4
         build: 
             context: .
             args:
                 build_version: 4.0.3
-        container_name: zeek-docker-ubuntu
+        container_name: zeek-docker-alpine
         command: bash
         tty: true
         stdin_open: true
         cap_add:
             - NET_RAW
         network_mode: "host"
-        entrypoint: zeek
         # You may need to modify this command for your local host interface if eth0 doesn't exist
         command: -C -i af_packet::eth0 local
         volumes:

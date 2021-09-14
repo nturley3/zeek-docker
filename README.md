@@ -7,7 +7,7 @@ This repository contains necessary files for building and running Zeek on Docker
 There are two versions of build files contained in this repository:
 
 * An Ubuntu build version that is used for Zeek script development, code testing, PCAP testing etc. This is not a multi-stage build and produces a rather large image (around 1GB). It contains some helpful tools for doing Zeek script development form within the container. This will compile the latest LTS version of Zeek. 
-* An Alpine build that is multi-stage and can be used to run Zeek in your environment on live traffic. For example, this build is great for running Zeek on a Raspberry Pi at home. This will compile the latest LTS version of Zeek. 
+* An Alpine build that is multi-stage and can be used to run Zeek in your environment on live traffic. For example, this build is great for running Zeek on a Raspberry Pi at home. This will compile the latest LTS version of Zeek and the image size is around 40MB. 
 
 NOTE: At this time, a trusted build is not available from a public Docker Registry. You should use this repository to build local images. 
 
@@ -59,4 +59,35 @@ zeek_dist = /app/zeek-source/zeek-4.0.3
 
 ## Alpine Build
 
-TBD
+1. Change your directory to `<repo_path>/4.0/alpine`. You will find a `docker-compose.yml` file. You can build the image manually, but docker-compose is provided for convenience. 
+2. Run: `docker-compose build`. The build will take some time. 
+3. Once the build finishes, you should have a new image called `zeek-docker-alpine:4`. 
+
+Since the Alpine image is intended to run on live traffic (such as a Raspberry Pi), it has been stipped down and contains no user shells or utilities. You should use `docker-compose`: 
+
+**docker-compose**
+
+```
+docker-compose up -d
+```
+
+You can verify the container has started correctly and is listening on your host interface. 
+```
+docker-compose logs
+```
+
+You should see Zeek listening on the selected interface. For example:
+```
+zeek-docker-alpine | listening on eth0
+```
+
+NOTE: The `docker-compose.yml` file defaults to the `eth0` interface. If your server or workstation doesn't have `eth0` defined, running the container will fail with an error like the following:
+
+```
+zeek-docker-alpine | fatal error: problem with interface af_packet::eth0 (No such device)
+```
+
+This usually means the `eth0` interface is named something else on your host (for example, `enx381428befbf2`). Use `ifconfig` or `ip addr` to see the name of the interface. Since this container uses "host" mode networking configuration, you must have the correct name on your host for the interface for which you want Zeek to listen. 
+
+
+
