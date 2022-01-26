@@ -5,7 +5,7 @@ services:
         build: 
             context: .
             args:
-                build_version: 4.0.4
+                build_version: 4.0.5
         container_name: zeek-docker-alpine
         command: bash
         tty: true
