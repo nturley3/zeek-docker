@@ -32,7 +32,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && apt-get update && apt-get install -
     zsh \
     tzdata \
     vim \
-    linux-headers-$(uname -r) \
     && rm -rf /var/lib/apt/lists/*
 
 # set your timezone
@@ -108,9 +107,10 @@ WORKDIR /app/zeek-source
 #  && make install \
 #  && zeek -NN Zeek::AF_Packet
 
-RUN echo "Compiling AF_PACKET plugin..."
-RUN zkg install --force zeek-af_packet-plugin
-RUN zeek -NN Zeek::AF_Packet
+# Enable this section if you want to use the Ubuntu image for live traffic
+#RUN echo "Compiling AF_PACKET plugin..."
+#RUN zkg install --force zeek-af_packet-plugin
+#RUN zeek -NN Zeek::AF_Packet
 
 WORKDIR /app/zeek-work
 
@@ -122,13 +122,13 @@ COPY local.zeek /opt/zeek/share/zeek/site/local.zeek
 #COPY zeekctl.cfg /opt/zeek/etc/zeekctl.cfg
 # COPY cessoc.bundle /app/zeek-work
 
-RUN echo "=====> Installing Zeek packages..."
+#RUN echo "=====> Installing Zeek packages..."
 # RUN zkg install --force zeek/corelight/json-streaming-logs
-RUN zkg install --force \
-    salesforce/ja3 \
-    salesforce/hassh \
-    mitre-attack/bzar \
-    https://github.com/nturley3/json-streaming-logs
+#RUN zkg install --force \
+#    salesforce/ja3 \
+#    salesforce/hassh \
+#    mitre-attack/bzar \
+#    https://github.com/nturley3/json-streaming-logs
 
 WORKDIR /opt/zeek/logs
 
