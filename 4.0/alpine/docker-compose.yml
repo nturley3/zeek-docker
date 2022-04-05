@@ -5,7 +5,7 @@ services:
         build: 
             context: .
             args:
-                build_version: 4.0.3
+                build_version: 4.0.5
         container_name: zeek-docker-alpine
         command: bash
         tty: true
@@ -16,6 +16,6 @@ services:
         # You may need to modify this command for your local host interface if eth0 doesn't exist
         command: -C -i af_packet::eth0 local
         volumes:
-            - /home/zeek/logs:/zeek
+            - /zeek-logs:/zeek
         stdin_open: true
         tty: true
